@@ -1,1 +1,1 @@
-# TheAlgorithms
+# Data Structure and Algorithms
