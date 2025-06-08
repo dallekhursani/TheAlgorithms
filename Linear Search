@@ -1,0 +1,5 @@
+function LinearSearch(array, target):
+    for index from 0 to length of array - 1:
+        if array[index] == target:
+            return index  // Target found at this position
+    return -1  // Target not found in the array
