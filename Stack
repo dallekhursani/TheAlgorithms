@@ -1,0 +1,17 @@
+Initialize stack as empty list
+
+push(x):
+    add x to the end of stack
+
+pop():
+    if stack is empty:
+        return "Underflow"
+    remove and return last element of stack
+
+peek():
+    if stack is empty:
+        return "Empty"
+    return last element of stack
+
+isEmpty():
+    return (stack size == 0)
