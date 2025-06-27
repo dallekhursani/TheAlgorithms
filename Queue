@@ -1,0 +1,17 @@
+Initialize queue as empty list
+
+enqueue(x):
+    add x to the end of queue
+
+dequeue():
+    if queue is empty:
+        return "Underflow"
+    remove and return first element of queue
+
+peek():
+    if queue is empty:
+        return "Empty"
+    return first element of queue
+
+isEmpty():
+    return (queue size == 0)
