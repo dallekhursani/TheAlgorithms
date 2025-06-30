@@ -1,0 +1,39 @@
+Class HashMap:
+    Function __init__(size):
+        Set self.size = size
+        Create self.buckets as a list of empty lists of length size
+
+    Function _hash(key):
+        Return hash(key) MODULO self.size
+
+    Function put(key, value):
+        index = _hash(key)
+        bucket = self.buckets[index]
+
+        For each (k, v) in bucket:
+            If k == key:
+                Replace (k, v) with (key, value)
+                Return
+
+        Append (key, value) to bucket
+
+    Function get(key):
+        index = _hash(key)
+        bucket = self.buckets[index]
+
+        For each (k, v) in bucket:
+            If k == key:
+                Return v
+
+        Return NULL  // key not found
+
+    Function remove(key):
+        index = _hash(key)
+        bucket = self.buckets[index]
+
+        For i from 0 to length(bucket) - 1:
+            If bucket[i].key == key:
+                Delete bucket[i]
+                Return TRUE
+
+        Return FALSE  // key not found
