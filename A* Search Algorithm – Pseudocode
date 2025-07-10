@@ -1,0 +1,36 @@
+function A_Star(start_node, goal_node)
+    open_set = PriorityQueue()
+    open_set.insert(start_node, priority=0)
+
+    came_from = empty_map()
+    g_score = map_with_default_value(infinity)
+    g_score[start_node] = 0
+
+    f_score = map_with_default_value(infinity)
+    f_score[start_node] = heuristic(start_node, goal_node)
+
+    while open_set is not empty
+        current = open_set.pop_lowest_priority()
+
+        if current == goal_node
+            return reconstruct_path(came_from, current)
+
+        for each neighbor of current
+            tentative_g_score = g_score[current] + distance(current, neighbor)
+
+            if tentative_g_score < g_score[neighbor]
+                came_from[neighbor] = current
+                g_score[neighbor] = tentative_g_score
+                f_score[neighbor] = g_score[neighbor] + heuristic(neighbor, goal_node)
+
+                if neighbor not in open_set
+                    open_set.insert(neighbor, f_score[neighbor])
+
+    return failure  // No path found
+
+function reconstruct_path(came_from, current)
+    total_path = [current]
+    while current in came_from
+        current = came_from[current]
+        total_path.prepend(current)
+    return total_path
