@@ -1,0 +1,29 @@
+Function Get_LCS_String(str1, str2):
+    Let m = length of str1
+    Let n = length of str2
+
+    Create a 2D array dp of size (m+1) x (n+1), initialized with 0
+
+    // Fill dp table
+    For i from 1 to m:
+        For j from 1 to n:
+            If str1[i-1] == str2[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            Else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    // Reconstruct LCS
+    Initialize i = m, j = n
+    Initialize result as empty string
+
+    While i > 0 and j > 0:
+        If str1[i-1] == str2[j-1]:
+            Prepend str1[i-1] to result
+            i = i - 1
+            j = j - 1
+        Else If dp[i-1][j] > dp[i][j-1]:
+            i = i - 1
+        Else:
+            j = j - 1
+
+    Return result
