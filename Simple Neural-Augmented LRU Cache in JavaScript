@@ -1,0 +1,76 @@
+class NeuralAugmentedCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.cache = new Map();
+    this.accessHistory = new Map();
+    this.time = 0;
+  }
+
+  // Fake neural model: higher score = more likely to be reused soon
+  score(key) {
+    const frequency = this.accessHistory.get(key)?.count || 0;
+    const lastAccess = this.accessHistory.get(key)?.last || 0;
+    return frequency * 0.7 + (1 / (this.time - lastAccess + 1)) * 0.3;
+  }
+
+  put(key, value) {
+    this.time++;
+
+    // If item already exists, update value and access info
+    if (this.cache.has(key)) {
+      this.cache.set(key, value);
+      this._updateHistory(key);
+      return;
+    }
+
+    // If cache is full, evict using "neural" strategy
+    if (this.cache.size >= this.capacity) {
+      let lowestScore = Infinity;
+      let keyToEvict = null;
+
+      for (let k of this.cache.keys()) {
+        const score = this.score(k);
+        if (score < lowestScore) {
+          lowestScore = score;
+          keyToEvict = k;
+        }
+      }
+
+      if (keyToEvict !== null) {
+        this.cache.delete(keyToEvict);
+        this.accessHistory.delete(keyToEvict);
+      }
+    }
+
+    this.cache.set(key, value);
+    this._updateHistory(key);
+  }
+
+  get(key) {
+    this.time++;
+    if (!this.cache.has(key)) return null;
+    this._updateHistory(key);
+    return this.cache.get(key);
+  }
+
+  _updateHistory(key) {
+    if (!this.accessHistory.has(key)) {
+      this.accessHistory.set(key, { count: 0, last: 0 });
+    }
+    const record = this.accessHistory.get(key);
+    record.count++;
+    record.last = this.time;
+  }
+}
+
+// Usage
+const cache = new NeuralAugmentedCache(3);
+
+cache.put('A', 10);
+cache.put('B', 20);
+cache.get('A');
+cache.put('C', 30);
+cache.get('B');
+cache.put('D', 40); // Should evict least "useful" item
+
+console.log(cache.cache); // Check what's still in cache
