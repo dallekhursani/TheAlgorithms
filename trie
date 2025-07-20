@@ -1,10 +1,1 @@
-class Trie:
-    root ← new TrieNode()
 
-    method insert(word):
-        node ← root
-        for each character ch in word:
-            if ch not in node.children:
-                node.children[ch] ← new TrieNode()
-            node ← node.children[ch]
-        node.isEndOfWord ← true
